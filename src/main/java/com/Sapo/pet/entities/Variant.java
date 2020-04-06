@@ -25,6 +25,8 @@ public class Variant extends BaseEntity implements Serializable{
 	private String option2;
 	@Column(name = "option3", length = 45)
 	private String option3;
+	@Column(name = "price")
+	private Float price;
 	@Column(name = "age", length = 4)
 	private Integer age;
 	@Column(name = "age_unit", length = 10)
@@ -54,7 +56,50 @@ public class Variant extends BaseEntity implements Serializable{
 //	@OneToMany(cascade = CascadeType.ALL, mappedBy = "variant" )
 //	private List<Option> options;
 	
-	
+	public void setVariantDefault(Variant variant, Integer id, Date date1, Date date2) {
+		variant.setOption1("default title"); 
+		variant.setOption2(null); 
+		variant.setOption3(null); 
+//		variant.setAge(0);
+//		variant.setAgeUnit(null); 
+//		variant.setWeight((float) 0.0); 
+//		variant.setWeightUnit(null); 
+//		variant.setInventoryQuantity(0);
+		variant.setCreatedOn(date1); 
+		variant.setModifiedOn(date2); 
+		variant.setStatus(true); 
+		variant.setIdPet(id); 
+	}
+		
+	public void  setVariant(Variant variant, VariantModelRequest variantModelReq, Integer idPet , Date date1, Date date2) {
+		String[] valueOptions = new String[3];
+		int i = 0;
+		if(variantModelReq.getOptions() == null) {
+			valueOptions[0] = "Default Title";
+			valueOptions[1] = null;
+			valueOptions[2] = null;
+		}
+		else {
+			for (OptionModelRequest oMR : variantModelReq.getOptions()) {			// get value from request
+				valueOptions[i] = oMR.getValue();
+				i++;
+			}
+		}
+		
+		variant.setOption1( valueOptions[0]);
+		variant.setOption2( valueOptions[1]);
+		variant.setOption3( valueOptions[2]);
+		variant.setPrice(variantModelReq.getPrice());
+		variant.setAge(variantModelReq.getAge());
+		variant.setAgeUnit(variantModelReq.getAgeUnit()); 
+		variant.setWeight(variantModelReq.getWeight()); 
+		variant.setWeightUnit(variantModelReq.getWeightUnit()); 
+		variant.setInventoryQuantity(variantModelReq.getInventoryQuantity());
+		variant.setCreatedOn(date1); 
+		variant.setModifiedOn(date2); 
+		variant.setStatus(true); 
+		variant.setIdPet(idPet); 
+	}
 	
 	public String getOption1() {
 		return option1;
@@ -128,6 +173,12 @@ public class Variant extends BaseEntity implements Serializable{
 	}
 	public void setIdPet(Integer idPet) {
 		this.idPet = idPet;
+	}
+	public Float getPrice() {
+		return price;
+	}
+	public void setPrice(Float price) {
+		this.price = price;
 	}
 	
 

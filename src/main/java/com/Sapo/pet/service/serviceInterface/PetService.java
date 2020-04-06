@@ -13,7 +13,7 @@ public interface PetService {
 	public PetModel getPetById(Integer id);
 	public PetModel getPetByName(String name);
 	public boolean addPet(PetModelRequest petModelReq, PetModel petModel);
-	public boolean editPetById(Integer id, PetModelRequest petModelReq, PetModel petModel) throws NotFoundException;
+	public boolean editPetById(Integer id, PetModelRequest petModelReq, PetModel petModel) throws NotFoundException, javassist.NotFoundException;
 	public boolean deletePet(Integer id);
 	
 }

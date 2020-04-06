@@ -57,7 +57,7 @@ public class PetController {
 	}
 	
 	@PutMapping(path = "/pets/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> editPetbyId(@PathVariable("id") Integer id, @RequestBody PetModelRequest petModelReq){
+	public ResponseEntity<Object> editPetbyId(@PathVariable("id") Integer id, @RequestBody PetModelRequest petModelReq) throws javassist.NotFoundException{
 		PetModel petModel = new PetModel();
 		boolean check = false;
 		try {

@@ -11,6 +11,7 @@ public class VariantModel {
 	private String option1;
 	private String option2;
 	private String option3;
+	private Float price;
 	private Integer age;
 	private String ageUnit;
 	private Float weight;
@@ -42,6 +43,7 @@ public class VariantModel {
 		this.inventoryQuantity = variant.getInventoryQuantity();
 		this.createdOn = variant.getCreatedOn();
 		this.modifiedOn = variant.getModifiedOn();
+		this.price = variant.getPrice();
 		
 	}
 	
@@ -112,6 +114,16 @@ public class VariantModel {
 	}
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+
+	public Float getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(Float price) {
+		this.price = price;
 	}
 	
 	

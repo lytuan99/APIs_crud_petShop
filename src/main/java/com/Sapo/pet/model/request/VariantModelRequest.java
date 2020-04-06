@@ -20,6 +20,7 @@ public class VariantModelRequest {
 	private Float weight;
 	private String weightUnit;
 	private Integer inventoryQuantity;
+	private Float price;
 	
 
 	public Integer getAge() {
@@ -64,6 +65,12 @@ public class VariantModelRequest {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public Float getPrice() {
+		return price;
+	}
+	public void setPrice(Float price) {
+		this.price = price;
 	}
 
 	

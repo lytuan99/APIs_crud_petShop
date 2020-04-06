@@ -40,6 +40,27 @@ public class Option extends BaseEntity implements Serializable{
 //	@OneToMany(cascade = CascadeType.ALL, mappedBy = "option")
 //	private List<OptionValue> optionValues;
 
+	
+	public void  setOptionDefault(Option option, Date date, Integer idVariant) {
+		option.setName("Default"); 
+		option.setValue("Default Title");
+		option.setPosition(1); 
+		option.setCreatedOn(date); 
+		option.setModifiedOn(date); 
+		option.setStatus(true); 
+		option.setIdVariant(idVariant); 
+	}
+
+	public void  setOption(Option option, String name, String value, Integer position, Date date,Integer idVariant  ) {
+		option.setName(name); 
+		option.setValue(value);
+		option.setPosition(position); 
+		option.setCreatedOn(date); 
+		option.setModifiedOn(date); 
+		option.setStatus(true); 
+		option.setIdVariant(idVariant); 
+	
+	}
 	public Integer getPosition() {
 		return position;
 	}

@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Sapo.pet.entities.Option;
 import com.Sapo.pet.entities.Pet;
@@ -25,6 +26,7 @@ import com.Sapo.pet.repository.VariantRepository;
 import com.Sapo.pet.service.serviceInterface.PetService;
 
 @Service
+@Transactional(rollbackFor = Exception.class )
 public class PetServiceImplement implements PetService {
 
 	@Autowired
@@ -99,13 +101,9 @@ public class PetServiceImplement implements PetService {
 				position++;
 			}
 		}
-
 	}
-	
-
 	@Override
 	public PetModel getPetByName(String name) {
-
 		return null;
 	}
 
@@ -117,7 +115,7 @@ public class PetServiceImplement implements PetService {
 		if (petModelReq.getName() == null)
 			return false;
 		Pet pet = new Pet();
-		setPet(pet, petModelReq, date, date);
+		pet.setPet(pet, petModelReq, date, date);
 		petRepository.save(pet);
 		petModel.setPetModel(pet);
 		if (petModelReq.getVariants() == null) {
@@ -130,8 +128,8 @@ public class PetServiceImplement implements PetService {
 	}
 	
 	
-
-	private boolean saveVariantAndOptionUpdate(PetModel petModel, List<VariantModelRequest> variantModelReqs, Date date) {
+// hàm này hiện tại ko trả về response cho tất cả các varaint của pet,.. mới chỉ trả về các variant mới hoặc được update
+	private boolean saveVariantAndOptionUpdate(PetModel petModel, List<VariantModelRequest> variantModelReqs, Date date) throws javassist.NotFoundException {
 		List<VariantModelRequest> newVariantMR = new ArrayList<VariantModelRequest>(); 		// include the new variants (have id == null)
 		for (VariantModelRequest variantModelReq : variantModelReqs) {
 			if(variantModelReq.getId() == null) {
@@ -139,7 +137,13 @@ public class PetServiceImplement implements PetService {
 				continue;
 			}
 			Variant variant = variantRepository.findByIdAndStatus(variantModelReq.getId(), petModel.getId(), true);
+			if(variant == null) {
+				System.out.println("Lỗi nhá....ko lưu cái gì nữa");
+				throw new javassist.NotFoundException("not found id variant");
+			}
 			VariantModel variantModel;
+			if(variantModelReq.getPrice() != null)
+				variant.setPrice(variantModelReq.getPrice());
 			if(variantModelReq.getAge() != null)
 				variant.setAge(variantModelReq.getAge());
 			if(variantModelReq.getAgeUnit() != null)
@@ -150,9 +154,6 @@ public class PetServiceImplement implements PetService {
 				variant.setWeight(variantModelReq.getWeight());
 			if(variantModelReq.getWeightUnit() != null)
 				variant.setWeightUnit(variantModelReq.getWeightUnit());
-			
-			
-			
 			if(variantModelReq.getOptions() == null) {
 				variant.setModifiedOn(date);
 				variantRepository.save(variant);
@@ -162,7 +163,6 @@ public class PetServiceImplement implements PetService {
 			}
 			else 
 				saveOptionToUpdate(petModel, variant, variantModelReq, date);
-				
 		}
 		if(newVariantMR.size() != 0)
 			saveVariant( petModel, variantModelReqs, petModel.getId(), date);
@@ -209,16 +209,12 @@ public class PetServiceImplement implements PetService {
 	
 	
 	@Override 
-	public boolean editPetById(Integer id, PetModelRequest petModelReq, PetModel petModel) throws NotFoundException {
-
+	public boolean editPetById(Integer id, PetModelRequest petModelReq, PetModel petModel) throws NotFoundException, javassist.NotFoundException {
 		Calendar cal = Calendar.getInstance();
 		Date date = cal.getTime();
-		
 		Pet currentPet = petRepository.findByIdAndStatus(id, true);
-		
 		if (currentPet == null)
 			return false;
-		
 		if(petModelReq.getName() != null) {
 			currentPet.setName(petModelReq.getName());
 		}
@@ -230,8 +226,9 @@ public class PetServiceImplement implements PetService {
 		}
 		petModel.setPetModelUpdate(id,currentPet.getName(), currentPet.getTags(), currentPet.getContent(), currentPet.getCreatedOn(), date);
 		currentPet.setModifiedOn(date);
-		petRepository.save(currentPet);
-		
+		petRepository.save(currentPet);  // đang thử chỗ này @Transactional xem có rollback lại không
+		System.out.println("vừa save current Pet xong rồi nhá >>>>>>>>>>>>>>>>>>>>>");
+		System.out.println("name vừa thay đổi :) : "+currentPet.getName());
 		if(petModelReq.getVariants() == null) {
 			return true;
 		}
@@ -263,7 +260,7 @@ public class PetServiceImplement implements PetService {
 		for (VariantModelRequest variantModelReq : variantModelReqs) {
 			
 			Variant variant = new Variant();
-			setVariant(variant, variantModelReq, petId, date, date);
+			variant.setVariant(variant, variantModelReq, petId, date, date);
 			variantRepository.save(variant);
 			VariantModel variantModel = new VariantModel(variant);
 			petModel.addVariantModel(variantModel);				
@@ -271,9 +268,8 @@ public class PetServiceImplement implements PetService {
 			if(variantModelReq.getOptions() == null) {   // ĐỂ Ý CHỖ NÀY: nếu chuyển thành mặc định luôn lưu 3 option thì phải sửa ở đây
 				
 				Option option = new Option();
-				setOptionDefault(option, date, variant.getId()); // set default option
+				option.setOptionDefault(option, date, variant.getId()); // set default option
 				optionRepository.save(option);
-				
 				
 				optionModels[0] = new OptionModel(option, petModel.getId());
 				optionModels[0].addValue("Default Title");
@@ -304,22 +300,21 @@ public class PetServiceImplement implements PetService {
 	public void saveOption(String[] nameOptions, String[] values, Integer idVariant, Date date, VariantModel variantModel) {
 		for (int i = 0; i < nameOptions.length; i++) {
 			Option option = new Option();
-			setOption(option, nameOptions[i], values[i], i + 1, date, idVariant);
+			option.setOption(option, nameOptions[i], values[i], i + 1, date, idVariant);
 			optionRepository.save(option);
 		}
 	}
-	
 	
 	private void saveDefaultEntities(PetModel petModel, Date date) {
 		Variant variant = new Variant();
 		Option option = new Option();
 		
-		setVariantDefault(variant, petModel.getId(), date, date); // set default variant
+		variant.setVariantDefault(variant, petModel.getId(), date, date); // set default variant
 		variantRepository.save(variant);
 		VariantModel variantModel = new VariantModel(variant);
 		petModel.addVariantModel(variantModel);
 
-		setOptionDefault(option, date, variant.getId()); // set default option
+		option.setOptionDefault(option, date, variant.getId()); // set default option
 		optionRepository.save(option);
 		for(int i = 1; i < 3; i++) {
 			option = new Option();
@@ -329,78 +324,10 @@ public class PetServiceImplement implements PetService {
 		petModel.addOptionModel(optionModel);
 	}
 	
-	private void setPet(Pet pet,PetModelRequest petModelReq, Date createD, Date modifiedD) {
-		pet.setName(petModelReq.getName());
-		pet.setTags(petModelReq.getTags());
-		pet.setContent(petModelReq.getContent());
-		pet.setCreatedOn(createD);
-		pet.setModifiedOn(modifiedD);
-		pet.setStatus(true);
-	}
-
-	private void  setOptionDefault(Option option, Date date, Integer idVariant) {
-		option.setName("Default"); 
-		option.setValue("Default Title");
-		option.setPosition(1); 
-		option.setCreatedOn(date); 
-		option.setModifiedOn(date); 
-		option.setStatus(true); 
-		option.setIdVariant(idVariant); 
-	}
-
-	private void  setOption(Option option, String name, String value, Integer position, Date date,Integer idVariant  ) {
-		option.setName(name); 
-		option.setValue(value);
-		option.setPosition(position); 
-		option.setCreatedOn(date); 
-		option.setModifiedOn(date); 
-		option.setStatus(true); 
-		option.setIdVariant(idVariant); 
 	
-	}
+
+	
 	
 	// default variant
-	private void setVariantDefault(Variant variant, Integer id, Date date1, Date date2) {
-		variant.setOption1("default title"); 
-		variant.setOption2(null); 
-		variant.setOption3(null); 
-		variant.setAge(0);
-		variant.setAgeUnit(null); 
-		variant.setWeight((float) 0.0); 
-		variant.setWeightUnit(null); 
-		variant.setInventoryQuantity(0);
-		variant.setCreatedOn(date1); 
-		variant.setModifiedOn(date2); 
-		variant.setStatus(true); 
-		variant.setIdPet(id); 
-	}
-		
-	public void  setVariant(Variant variant, VariantModelRequest variantModelReq, Integer idPet , Date date1, Date date2) {
-		String[] valueOptions = new String[3];
-		int i = 0;
-		if(variantModelReq.getOptions() == null) {
-			valueOptions[0] = "Default Title";
-			valueOptions[1] = null;
-			valueOptions[2] = null;
-		}
-		else {
-			for (OptionModelRequest oMR : variantModelReq.getOptions()) {			// get value from request
-				valueOptions[i] = oMR.getValue();
-				i++;
-			}
-		}
-		
-		variant.setOption1( valueOptions[0]);
-		variant.setOption2( valueOptions[1]);
-		variant.setOption3( valueOptions[2]);
-		variant.setAge(variantModelReq.getAge());
-		variant.setAgeUnit(variantModelReq.getAgeUnit()); 
-		variant.setWeight(variantModelReq.getWeight()); 
-		variant.setWeightUnit(variantModelReq.getWeightUnit()); 
-		variant.setInventoryQuantity(variantModelReq.getInventoryQuantity());
-		variant.setCreatedOn(date1); 
-		variant.setModifiedOn(date2); 
-		variant.setStatus(true); 
-		variant.setIdPet(idPet); 
-	}
+
 }

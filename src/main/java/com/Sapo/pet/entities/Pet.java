@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.Sapo.pet.model.request.PetModelRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -36,7 +37,14 @@ public class Pet extends BaseEntity {
 //	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")    // mặc định đã là lazy fetching rồi
 //	private List<Variant> variants;
 	
-	
+	public void setPet(Pet pet,PetModelRequest petModelReq, Date createD, Date modifiedD) {
+		pet.setName(petModelReq.getName());
+		pet.setTags(petModelReq.getTags());
+		pet.setContent(petModelReq.getContent());
+		pet.setCreatedOn(createD);
+		pet.setModifiedOn(modifiedD);
+		pet.setStatus(true);
+	}
 	public boolean isStatus() {
 		return status;
 	}
