@@ -2,21 +2,22 @@ package com.Sapo.pet.model.response;
 
 public class Errors {
 
-	private String name;
+	private String error;
 
-	public Errors(String name) {
-		this.name = name;
+	public Errors(String error) {
+		this.setError(error);
 	}
-	public static Errors nullName(String name) {
+	public static Errors message(String name) {
 		Errors err = new Errors(name);
 		return err;
 	}
-	public String getName() {
-		return name;
+	public String getError() {
+		return error;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setError(String error) {
+		this.error = error;
 	}
+	
 	
 	
 	

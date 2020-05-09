@@ -2,15 +2,17 @@ package com.Sapo.pet.model.request;
 
 import java.util.List;
 
-import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
-@Validated
 public class PetModelRequest {
 
-	
+	@Valid
+	@NotNull(message = "name not to be null!!")
 	private String name;
 	private String tags;
 	private String content;
+	@Valid
 	private List<VariantModelRequest> variants;
 	
 	public PetModelRequest() {

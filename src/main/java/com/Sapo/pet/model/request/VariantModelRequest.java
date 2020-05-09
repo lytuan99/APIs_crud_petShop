@@ -1,5 +1,8 @@
 package com.Sapo.pet.model.request;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -14,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 public class VariantModelRequest {
 
 	private Integer id;
+	@Size(min = 0, max = 3, message = "number of option mustn't over 3 one")
+	@Valid
 	private OptionModelRequest[] options;
 	private Integer age;
 	private String ageUnit;

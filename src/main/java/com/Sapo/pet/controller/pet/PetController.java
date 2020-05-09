@@ -1,4 +1,4 @@
-package com.Sapo.pet.controller;
+package com.Sapo.pet.controller.pet;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +24,12 @@ import com.Sapo.pet.model.response.Errors;
 import com.Sapo.pet.model.response.NotFound;
 import com.Sapo.pet.model.response.PetModel;
 import com.Sapo.pet.model.response.RestResponse;
+import com.Sapo.pet.notificationCode.SignalCode;
 import com.Sapo.pet.service.serviceInterface.PetService;
 
 @RestController
 @RequestMapping("/api")
-
+@Validated
 public class PetController {
 	
 	@Autowired private PetService petService;
@@ -48,10 +50,9 @@ public class PetController {
 	@PostMapping(path = "/pets", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> createPet(@Valid @RequestBody PetModelRequest petModelReq){
 		PetModel petModel = new PetModel();
-		boolean checkCreate = petService.addPet(petModelReq,petModel );
-		if(!checkCreate) {
-			return new ResponseEntity<>(Errors.nullName("name not to be null"), HttpStatus.OK);
-		}
+		SignalCode signal = petService.addPet(petModelReq,petModel );
+		if(signal == SignalCode.ITERATED_OPTION)
+			return new ResponseEntity<>(Errors.message("option is iterated!!"), HttpStatus.BAD_REQUEST);
 		else
 			return new ResponseEntity<>(petModel, HttpStatus.OK);
 	}
@@ -61,7 +62,7 @@ public class PetController {
 		PetModel petModel = new PetModel();
 		boolean check = false;
 		try {
-			check = petService.editPetById(id, petModelReq, petModel);		// chỗ này có khi phải dùng transaction
+			check = petService.editPetById(id, petModelReq, petModel);
 			
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(NotFound.notFound("not found id catch!"), HttpStatus.BAD_REQUEST);

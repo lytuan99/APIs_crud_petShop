@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Table(name = "variants")
 public class Variant extends BaseEntity implements Serializable{
 
-/**
-	 * 
-	 */
+	public static final int MAX_OPTION = 3;
 	private static final long serialVersionUID = 1L;
 	@Column(name = "option1", length = 45)
 	private String option1;
@@ -71,8 +69,8 @@ public class Variant extends BaseEntity implements Serializable{
 		variant.setIdPet(id); 
 	}
 		
-	public void  setVariant(Variant variant, VariantModelRequest variantModelReq, Integer idPet , Date date1, Date date2) {
-		String[] valueOptions = new String[3];
+	public void  setVariant( VariantModelRequest variantModelReq, Integer idPet , Date date1, Date date2) {
+		String[] valueOptions = new String[MAX_OPTION];
 		int i = 0;
 		if(variantModelReq.getOptions() == null) {
 			valueOptions[0] = "Default Title";
@@ -86,19 +84,19 @@ public class Variant extends BaseEntity implements Serializable{
 			}
 		}
 		
-		variant.setOption1( valueOptions[0]);
-		variant.setOption2( valueOptions[1]);
-		variant.setOption3( valueOptions[2]);
-		variant.setPrice(variantModelReq.getPrice());
-		variant.setAge(variantModelReq.getAge());
-		variant.setAgeUnit(variantModelReq.getAgeUnit()); 
-		variant.setWeight(variantModelReq.getWeight()); 
-		variant.setWeightUnit(variantModelReq.getWeightUnit()); 
-		variant.setInventoryQuantity(variantModelReq.getInventoryQuantity());
-		variant.setCreatedOn(date1); 
-		variant.setModifiedOn(date2); 
-		variant.setStatus(true); 
-		variant.setIdPet(idPet); 
+		this.setOption1( valueOptions[0]);
+		this.setOption2( valueOptions[1]);
+		this.setOption3( valueOptions[2]);
+		this.setPrice(variantModelReq.getPrice());
+		this.setAge(variantModelReq.getAge());
+		this.setAgeUnit(variantModelReq.getAgeUnit()); 
+		this.setWeight(variantModelReq.getWeight()); 
+		this.setWeightUnit(variantModelReq.getWeightUnit()); 
+		this.setInventoryQuantity(variantModelReq.getInventoryQuantity());
+		this.setCreatedOn(date1); 
+		this.setModifiedOn(date2); 
+		this.setStatus(true); 
+		this.setIdPet(idPet); 
 	}
 	
 	public String getOption1() {
