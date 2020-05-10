@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `petshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `petshop`;
 -- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: petshop
@@ -36,7 +34,7 @@ CREATE TABLE `options` (
   PRIMARY KEY (`id`),
   KEY `fk_variant_idx` (`id_variant`),
   CONSTRAINT `fk_variant` FOREIGN KEY (`id_variant`) REFERENCES `variants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +43,7 @@ CREATE TABLE `options` (
 
 LOCK TABLES `options` WRITE;
 /*!40000 ALTER TABLE `options` DISABLE KEYS */;
-INSERT INTO `options` VALUES (34,'color','đỏ',1,'2020-03-30 14:44:28.354000','2020-03-30 14:48:57.138000',17,1),(35,'size','large',2,'2020-03-30 14:44:28.354000','2020-03-30 14:48:57.138000',17,1),(36,NULL,NULL,3,'2020-03-30 14:44:28.354000','2020-03-30 14:44:28.354000',17,1),(43,'color','tím',1,'2020-03-30 15:13:35.240000','2020-03-30 15:18:58.050000',20,1),(44,'size','small',2,'2020-03-30 15:13:35.240000','2020-03-30 15:18:58.050000',20,1),(45,'gender','male',3,'2020-03-30 15:13:35.240000','2020-03-30 15:18:58.050000',20,1),(46,'color','tím',1,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',21,1),(47,'gender','male',2,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',21,1),(48,NULL,NULL,3,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',21,1),(49,'color','xanh',1,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',22,1),(50,'gender','female',2,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',22,1),(51,NULL,NULL,3,'2020-03-30 16:06:53.931000','2020-03-30 16:06:53.931000',22,1),(52,'color','nâu sữa',1,'2020-04-06 14:07:52.169000','2020-04-06 14:07:52.169000',23,1),(53,'gender','đực',2,'2020-04-06 14:07:52.169000','2020-04-06 14:07:52.169000',23,1),(54,NULL,NULL,3,'2020-04-06 14:07:52.169000','2020-04-06 14:07:52.169000',23,1);
+INSERT INTO `options` VALUES (67,'color','đỏ',1,'2020-05-09 14:55:05.139000','2020-05-09 15:13:02.260000',38,1),(68,'size','small',2,'2020-05-09 14:55:05.139000','2020-05-09 15:13:02.260000',38,1),(69,NULL,NULL,3,'2020-05-09 14:55:05.139000','2020-05-09 15:13:02.260000',38,1),(70,'size','big',1,'2020-05-09 15:04:39.412000','2020-05-09 15:25:58.804000',42,1),(71,'gender','đực',2,'2020-05-09 15:04:39.412000','2020-05-09 15:25:58.804000',42,1),(72,'color','trắng',3,'2020-05-09 15:04:39.412000','2020-05-09 15:25:58.804000',42,1),(73,'size','small',1,'2020-05-09 15:22:44.880000','2020-05-09 15:22:44.880000',43,1),(74,'color','đen',2,'2020-05-09 15:22:44.880000','2020-05-09 15:22:44.880000',43,1),(75,NULL,NULL,3,'2020-05-09 15:22:44.880000','2020-05-09 15:22:44.880000',43,1),(76,'size','small',1,'2020-05-09 15:23:57.327000','2020-05-09 15:23:57.327000',44,1),(77,'color','đen',2,'2020-05-09 15:23:57.327000','2020-05-09 15:23:57.327000',44,1),(78,NULL,NULL,3,'2020-05-09 15:23:57.327000','2020-05-09 15:23:57.327000',44,1),(79,'size','small',1,'2020-05-09 15:25:58.804000','2020-05-09 15:25:58.804000',45,1),(80,'color','đen',2,'2020-05-09 15:25:58.804000','2020-05-09 15:25:58.804000',45,1),(81,'type','cảnh',3,'2020-05-09 15:25:58.804000','2020-05-09 15:25:58.804000',45,1);
 /*!40000 ALTER TABLE `options` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +63,7 @@ CREATE TABLE `pets` (
   `modified_on` datetime DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +72,7 @@ CREATE TABLE `pets` (
 
 LOCK TABLES `pets` WRITE;
 /*!40000 ALTER TABLE `pets` DISABLE KEYS */;
-INSERT INTO `pets` VALUES (12,'mèo anh lông ngắn','mèo, mèo anh','<h1>mèo anh ngắn</h1>','2020-03-30 14:44:28','2020-03-30 15:18:58',1),(13,'chó tây','mèo, mèo anh','<h1>mèo anh lông ngắn</h1>','2020-03-30 16:06:54','2020-03-30 16:06:54',1),(14,'mèo ba tư','mèo, mèo ba tư','<h1>mèo ba tư</h1>','2020-04-06 14:07:52','2020-04-06 14:07:52',1);
+INSERT INTO `pets` VALUES (30,'gà chọi ta','ta tây ta','<h1>chicken wings</h1>','2020-05-09 14:55:05','2020-05-09 15:25:59',1);
 /*!40000 ALTER TABLE `pets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,22 +86,20 @@ DROP TABLE IF EXISTS `variants`;
 CREATE TABLE `variants` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `pet_id` int(10) DEFAULT NULL,
-  `option1` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL,
-  `option2` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL,
-  `option3` varchar(45) COLLATE utf8mb4_bin DEFAULT NULL,
   `age` int(4) DEFAULT NULL,
   `age_unit` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
   `weight` float DEFAULT NULL,
   `weight_unit` varchar(5) COLLATE utf8mb4_bin DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `inventory_quantity` int(10) DEFAULT NULL,
+  `position` int(10) DEFAULT NULL,
   `created_on` datetime DEFAULT NULL,
   `modified_on` datetime DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_pet_idx` (`pet_id`),
   CONSTRAINT `fk_pet` FOREIGN KEY (`pet_id`) REFERENCES `pets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +108,7 @@ CREATE TABLE `variants` (
 
 LOCK TABLES `variants` WRITE;
 /*!40000 ALTER TABLE `variants` DISABLE KEYS */;
-INSERT INTO `variants` VALUES (17,12,'đỏ','large',NULL,4,'years',2,'kg',NULL,1,'2020-03-30 14:44:28','2020-03-30 14:48:57',1),(20,12,'tím','small','male',2,'tháng',2,'kg',NULL,3,'2020-03-30 15:13:35','2020-03-30 15:18:58',1),(21,13,'tím','male',NULL,2,'tháng',2,'kg',NULL,3,'2020-03-30 16:06:54','2020-03-30 16:06:54',1),(22,13,'xanh','female',NULL,3,'năm',2,'kg',12.20,3,'2020-03-30 16:06:54','2020-03-30 16:06:54',1),(23,14,'nâu sữa','đực',NULL,10,'tháng',2,'kg',NULL,1,'2020-04-06 14:07:52','2020-04-06 14:07:52',1);
+INSERT INTO `variants` VALUES (38,30,NULL,NULL,NULL,NULL,NULL,NULL,1,'2020-05-09 14:55:05','2020-05-09 15:13:02',1),(42,30,NULL,NULL,NULL,NULL,NULL,NULL,2,'2020-05-09 15:04:39','2020-05-09 15:25:59',1),(43,30,NULL,NULL,NULL,NULL,NULL,NULL,3,'2020-05-09 15:22:45','2020-05-09 15:22:45',1),(44,30,NULL,NULL,NULL,NULL,NULL,NULL,4,'2020-05-09 15:23:57','2020-05-09 15:23:57',1),(45,30,NULL,NULL,NULL,NULL,NULL,NULL,5,'2020-05-09 15:25:59','2020-05-09 15:25:59',1);
 /*!40000 ALTER TABLE `variants` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,4 +125,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-06 14:21:31
+-- Dump completed on 2020-05-10  8:59:30

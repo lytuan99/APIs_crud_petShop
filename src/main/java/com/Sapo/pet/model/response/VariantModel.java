@@ -1,7 +1,9 @@
 package com.Sapo.pet.model.response;
 
 import java.util.Date;
+import java.util.List;
 
+import com.Sapo.pet.entities.Option;
 import com.Sapo.pet.entities.Variant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -17,12 +19,11 @@ public class VariantModel {
 	private Float weight;
 	private String weightUnit;
 	private Integer inventoryQuantity;
+	private Integer position;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createdOn;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date modifiedOn;
-	
-	
 	
 	
 	public VariantModel() {
@@ -30,17 +31,24 @@ public class VariantModel {
 	}
 
 
-	public VariantModel(Variant variant) {
+	public VariantModel(Variant variant, List<Option> options) {
 		super();
 		this.id = variant.getId();
-		this.option1 = variant.getOption1();
-		this.option3 = variant.getOption3();
-		this.option2 = variant.getOption2();
+		this.option1 = options.get(0).getValue();
+		if(options.size() > 0)
+			if(options.get(1) != null)
+				this.option2 =  options.get(1).getValue();
+		
+		if(options.size() > 1)
+			if(options.get(2) != null)
+				this.option3 =  options.get(2).getValue();
+		
 		this.age = variant.getAge();
 		this.ageUnit = variant.getAgeUnit();
 		this.weight = variant.getWeight();
 		this.weightUnit = variant.getWeightUnit();
 		this.inventoryQuantity = variant.getInventoryQuantity();
+		this.position = variant.getPosition();
 		this.createdOn = variant.getCreatedOn();
 		this.modifiedOn = variant.getModifiedOn();
 		this.price = variant.getPrice();
@@ -124,6 +132,16 @@ public class VariantModel {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+
+	public Integer getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 	
 	

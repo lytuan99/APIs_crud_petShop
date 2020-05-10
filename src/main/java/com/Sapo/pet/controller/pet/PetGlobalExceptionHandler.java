@@ -18,17 +18,23 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.Sapo.pet.error.CustomErrorResponse;
-import com.Sapo.pet.error.PetNotFoundException;
+import com.Sapo.pet.error.EntityNotFoundException;
+import com.Sapo.pet.error.IteratedOptionException;
 
-import javassist.NotFoundException;
 
 @ControllerAdvice
 public class PetGlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
-	@ExceptionHandler(NotFoundException.class)
+	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request, HttpServletResponse response) throws IOException {
 		CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(IteratedOptionException.class)
+	public ResponseEntity<CustomErrorResponse> customHandleIteratedOption(Exception ex, WebRequest request, HttpServletResponse response) throws IOException {
+		CustomErrorResponse errorResponse = new CustomErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 	
 	@Override

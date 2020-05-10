@@ -28,4 +28,7 @@ public interface VariantRepository extends JpaRepository<Variant, Integer>{
 	@Query(value = "SELECT COUNT(v.idPet) FROM Variant v WHERE v.idPet = :id")
 	Integer countVariantByIdPet(@Param("id") Integer id);
 
+	@Query(value = "SELECT MAX(v.position) FROM Variant v, Pet p WHERE v.idPet = :idPet and p.id = :idPet")
+	Integer getMaxPositionOfVariant(@Param("idPet") Integer idPet);
+	
 }

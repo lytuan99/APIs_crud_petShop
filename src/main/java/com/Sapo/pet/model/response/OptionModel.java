@@ -15,25 +15,19 @@ public class OptionModel {
 	
 	
 
+
+	
 	public OptionModel(Option option, Integer idPet) {
-		this.pet_id = idPet;
+		if(values == null)
+			values = new ArrayList<String>();
+		
+		this.values.add(option.getValue());
 		this.name = option.getName();
 		this.position = option.getPosition();
+		this.pet_id = idPet;
 	}
 	
-	public OptionModel(Option option,String value, Integer idPet) {
-		this.pet_id = idPet;
-		this.values.add(value);
-		this.name = option.getName();
-		this.position = option.getPosition();
-	}
 	
-	public void setOptionModel(String name, String value, Integer position, Integer idPet) {
-		this.pet_id = idPet;
-		this.position = position;
-		this.name = name;
-		this.values.add(value);
-		}
 	
 	public OptionModel() {
 		values = new ArrayList<String>();

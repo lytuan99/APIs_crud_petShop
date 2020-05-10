@@ -24,6 +24,7 @@ public class Option extends BaseEntity implements Serializable{
 	@Column(name = "created_on")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createdOn;
+	
 	@Column(name = "modified_on")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date modifiedOn;

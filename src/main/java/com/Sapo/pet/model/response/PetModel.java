@@ -39,15 +39,6 @@ public class PetModel {
 		options = new ArrayList<OptionModel>();
 	}
 	
-	public void setPetModelUpdate(Integer id, String name, String tags, String content, Date date1, Date date2) {
-		this.id = id;
-		this.name = name;
-		this.tags = tags;
-		this.content = content;
-		this.createdOn = date1;
-		this.modifiedOn = date2;
-	}
-
 	public void addOptionModel(OptionModel optionModel) {
 		options.add(optionModel);
 	}

@@ -19,7 +19,7 @@ public interface PetsRepository extends JpaRepository<Pet, Integer> {
 	@Query(value = "SELECT p FROM Pet p WHERE p.id = :id and p.status = :status")
 	Pet findByIdAndStatus(@Param("id") Integer id,@Param("status") Boolean status);
 	
-
+	
 	
 	@Query(value = "SELECT v FROM Pet p, Variant v WHERE p.id = :id and p.id = v.idPet and p.status = :status")
 	List<Variant> findAllVariantsByIdPetAndStatus(@Param("id") Integer id,@Param("status") Boolean status);
